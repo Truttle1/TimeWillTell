@@ -1,0 +1,54 @@
+body
+{
+	font-family: Candal, sans-serif;
+	background-color: #9ed0ff;
+}
+#titleheader
+{
+	width: 80%;
+	margin: auto;
+}
+#menu
+{
+	width: 80%;
+	margin: auto;
+	text-shadow: 1px 1px #646464;
+}
+#menu a
+{
+	margin-right: 5%;
+	text-decoration: none;
+	font-size: 18pt;
+	font-weight: BOLD;
+	color:blue;
+}
+#menu a:hover
+{
+	color: darkcyan;
+}
+#menu a:active
+{
+	color: red;
+}
+
+#currentpage
+{
+	margin-right: 5%;
+	text-decoration: none;
+	font-size: 18pt;
+	font-weight: BOLD;
+	color: green;
+}
+#content
+{
+	width: 90%;
+	background-color: white;
+	margin: 0 auto;
+	border: 8px gray solid;
+}
+#content h1
+{
+	font-size: 36pt;
+	color: darkblue;
+	text-shadow: 2px 2px #646464;
+}

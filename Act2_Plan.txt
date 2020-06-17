@@ -1,0 +1,24 @@
+﻿TIME WILL TELL
+
+Digital Age
+!-Meet Carl on Street. He asks you to find Creaturey.
+
+-TITLE SCREEN: William, Simon, and Skrapps standing in a city by a Burger House with hamburgers.
+
+!-Find Creaturey in a Burger House. Ambushed by some Garbzops.
+!-Creaturey leaves Burger House to find Carl, says he will look for Carl in the Park
+!-Player meets Carl and Creaturey in the Park. Carl found a tabloid with an article about a strange orb powering the Convex Monster Machine
+-Player goes towards Convex Inc. and finds it locked. New Enemy: Trukofire - A Firetruck enemy that can throw fire (like the Flairmers) or plow through all 3 characters (like Ignacio)
+-Player gets ambushed by 2 guards.
+-Guard mentions that a professor at Flare University used to work at Convex and might have a card to enter Convex Inc.
+
+-TITLE SCREEN: Simon looking confused at Flare University. William reading a book on a bench. Skrapps is throwing a frizbee or something.
+
+-Player goes to Flare University, but gets ambushed by some monsters (idk yet...Pidgeons maybe...). Professor Spew gives the Player a Convex Inc. Card
+
+-TITLE SCREEN: Skrapps looking afraid in Convex Inc as a guard is chasing him.
+
+-DUNGEON: CONVEX INC - Similar in size to Mt. Pyruz, but less finding things. Enemies include Garbzops, Scientists, and Guards
+-BOSS: Captain Convex: The CEO of Convex Inc - Mr. Convex.
+-CREATUREY BOSS: Kaiju Battle against Krokino - Convex Inc's latest, most destructive monster. If Creaturey is knocked too far back, Flare University gets destroyed. The battle ends when Creaturey pushes Krokino so far forward that he destroys Convex Inc.
+-William grabs the Time Orb, but Captain Convex snatches up Skrapps on his way out. William is devistated, but he must continue for the sake of the future.
