@@ -74,7 +74,7 @@ public class Fade {
 						{
 							fadeNum-=5;
 						}
-						else if(OverworldMode.currentRoom == RoomId.Pyruz3)
+						else if(OverworldMode.currentRoom == RoomId.Pyruz3 && Quest.quests[Quest.LOMO] < Global.LOMOCONSTANT)
 						{
 							fadeNum-=4;
 						}

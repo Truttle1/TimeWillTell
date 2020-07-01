@@ -1,0 +1,5 @@
+!-Move Suzy further right to avoid conflicts between her and the sign
+!-"Some sorts of fighting tips" -> "fighting tips"
+!-"Entarance" -> "Entrance"
+-Pressing a button before leveling up
+-Confirmation to close the game

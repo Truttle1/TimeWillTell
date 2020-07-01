@@ -209,7 +209,7 @@ public class Garbzop extends Monster{
 	public void flinch() 
 	{
 		setFrame(0,0);
-		window.battleMode.selectedMonster.currentAnimation = BattleAnimation.garbzopFlinch;
+		this.currentAnimation = BattleAnimation.garbzopFlinch;
 		
 		
 	}

@@ -23,4 +23,6 @@ public class Quest
 	
 	
 	public static final int WILLIAMFIRSTBATTLE = 8888;
+	
+	public static final int HAS_FIREBALL = 300;
 }

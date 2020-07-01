@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 
 import net.truttle1.time.battle.BattleAnimation;
 import net.truttle1.time.battle.monsters.MonsterType;
+import net.truttle1.time.effects.Store;
 
 public abstract class GameObject {
 	protected Game window;
@@ -30,6 +31,70 @@ public abstract class GameObject {
 	public GameObject(Game window)
 	{
 		this.window = window;
+	}
+
+	private int topItem = 0;
+	private int bottomItem = 0;
+	
+	protected void drawItemMenu(Color menuColor, Graphics g, int itemSelection)
+	{
+		int yOff = 50;
+		g.setFont(Global.battleFont);
+		g.setColor(menuColor);
+		g.fillRect(x-16, y-(300-yOff), 250, 160);
+		int itemsCounted = 0;
+		g.setColor(menuColor.darker());
+		g.drawString("Press [X] to go back",x-16,y-(155-yOff));
+		for(int i=topItem; i<Global.items.length; i++)
+		{
+			if(Global.items[i]>0)
+			{
+				if(itemSelection == i)
+				{
+					g.setColor(Color.white);
+					g.fillRect(x-4, y-(288-yOff), 225, 22);
+				}
+				g.setColor(menuColor.darker().darker());
+				g.drawString(Store.itemNames[i], x-2, y-(272-yOff));
+				g.drawString("x" + Integer.toString(Global.items[i]), x+180, y-(272-yOff));
+				yOff += 22;
+				itemsCounted++;
+			}
+			g.setFont(Global.battleFont);
+			if(topItem > itemSelection)
+			{
+				topItem = itemSelection;
+			}
+			
+			if(itemsCounted >= 5)
+			{
+				bottomItem = i;
+				if(bottomItem < itemSelection)
+				{
+					topItem = findTopItem(bottomItem);
+				}
+				break;
+			}
+		}
+	}
+
+	private int findTopItem(int bottomItem)
+	{
+		int topItem = bottomItem;
+		int itemsCounted = 0;
+		while(itemsCounted < 3)
+		{
+			if(topItem <= 0)
+			{
+				return 0;
+			}
+			if(Global.items[topItem] > 0)
+			{
+				itemsCounted++;
+			}
+			topItem--;
+		}
+		return topItem;
 	}
 	protected GameObject getPlayer()
 	{
@@ -190,6 +255,10 @@ public abstract class GameObject {
 		{
 			dist = 140;
 		}
+		if(window.battleMode.selectedMonster.type == MonsterType.Trukofire)
+		{
+			dist = 140;
+		}
 		if(window.battleMode.selectedMonster.type == MonsterType.Ignacio)
 		{
 			dist = 80;
@@ -296,5 +365,10 @@ public abstract class GameObject {
 			}	
 		}
 		return img;
+	}
+	
+	public int getPartnerId()
+	{
+		return -1;
 	}
 }

@@ -83,7 +83,7 @@ public class WilliamBattler extends GameObject{
 				Global.talkingTo = this;
 				Global.disableMovement = true;
 				Global.talking = 1;
-				SpeechBubble.talk("UGGGGGGGGHHH!!! I hate reading...but Creaturey told me that/I carried around this book all the time...and that/probably means that it contains some sort of fighting tips.../I mean, why else would I have it...",Global.willFont);
+				SpeechBubble.talk("UGGGGGGGGHHH!!! I hate reading...but Creaturey told me that/I carried around this book all the time...and that/probably means that it contains some fighting tips.../I mean, why else would I have it...",Global.willFont);
 				this.currentAnimation = BattleAnimation.williamTalk;
 				Global.informing = true;
 			}
@@ -249,25 +249,7 @@ public class WilliamBattler extends GameObject{
 		{
 			if(attackMiniPhase == 0)
 			{
-				g.setFont(Global.battleFont);
-				g.setColor(Color.green);
-				g.fillRect(x-16, y-300, 250, 160);
-				int yOff = 0;
-				for(int i=0; i<Global.items.length; i++)
-				{
-					if(Global.items[i]>0)
-					{
-						if(itemSelection == i)
-						{
-							g.setColor(Color.white);
-							g.fillRect(x-4, y-(288-yOff), 225, 22);
-						}
-						g.setColor(Color.green.darker().darker());
-						g.drawString(Store.itemNames[i], x-2, y-(272-yOff));
-						g.drawString("x" + Integer.toString(Global.items[i]), x+180, y-(272-yOff));
-						yOff += 22;
-					}
-				}
+				drawItemMenu(Color.green, g, itemSelection);
 			}
 			else
 			{

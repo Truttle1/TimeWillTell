@@ -165,6 +165,7 @@ public class SimonBattler extends GameObject{
 		{
 			if(attackMiniPhase == 0)
 			{
+				/*
 				g.setFont(Global.battleFont);
 				g.setColor(Color.orange);
 				g.fillRect(x-16, y-180, 250, 190);
@@ -186,7 +187,8 @@ public class SimonBattler extends GameObject{
 				}
 				g.setFont(Global.battleFont);
 				g.setColor(Color.orange.darker());
-				g.drawString("Press [X] to go back",x-16,y-155);
+				g.drawString("Press [X] to go back",x-16,y-155);*/
+				drawItemMenu(Color.orange,g,itemSelection);
 			}
 			else
 			{

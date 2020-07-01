@@ -2,7 +2,10 @@ package net.truttle1.time.battle;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
+import net.truttle1.time.battle.monsters.Monster;
 import net.truttle1.time.effects.SpeechBubble;
 import net.truttle1.time.effects.Store;
 import net.truttle1.time.main.GameObject;
@@ -32,10 +35,19 @@ public class SkrappsBattler extends GameObject{
 	private boolean ballVisible = false;
 	private int ballX;
 	private int ballY;
+	private BufferedImage[] ballSprite;
+	
+	private int specialAttackDamage;
+	private int specialAttackHiddenVariable;
+	
 	private int clubCharge;
 	private final int STICKBALL_ATTACK = 10;
 	private final int HEAL_ATTACK = 20;
 	private int specialSelections;
+	private ArrayList<SpecialAttack> specialAttacks;
+	
+	private int specialBufferTime = 15;
+	
 	public SkrappsBattler(Game window, int x, int y, BattleMode bm) {
 		super(window);
 		super.x = x;
@@ -46,6 +58,13 @@ public class SkrappsBattler extends GameObject{
 		startY = super.y;
 		this.id = ObjectId.SkrappsBattler;
 		this.flipped = true;
+		specialAttacks = new ArrayList<SpecialAttack>();
+		
+		if(true)
+		{
+			SpecialAttack fireSpell = new SpecialAttack("Fireball",3,5,1);
+			specialAttacks.add(fireSpell);
+		}
 	}
 
 	@Override
@@ -158,6 +177,7 @@ public class SkrappsBattler extends GameObject{
 		{
 			if(attackMiniPhase == 0)
 			{
+				/*
 				g.setFont(Global.battleFont);
 				g.setColor(Color.blue);
 				g.fillRect(x+160, y-280, 250, 190);
@@ -179,7 +199,9 @@ public class SkrappsBattler extends GameObject{
 				}
 				g.setFont(Global.battleFont);
 				g.setColor(Color.blue.darker());
-				g.drawString("Press [X] to go back",x+160,y-255);
+				g.drawString("Press [X] to go back",x+160,y-255);*/
+
+				drawItemMenu(Color.blue,g,itemSelection);
 			}
 			else
 			{
@@ -230,7 +252,52 @@ public class SkrappsBattler extends GameObject{
 		{
 			animate(ballX,ballY,BattleAnimation.ball,1,g);
 		}
+		
+		if(special >= 2 && ballVisible)
+		{
+			animate(ballX,ballY,ballSprite,1,g);
+		}
+		
+		if(special == 3)
+		{
+			renderFireballAction(g);
+		}
 	}
+	
+	private void renderFireballAction(Graphics g)
+	{
+
+		if(attackMiniPhase >= 4)
+		{
+			g.setColor(Color.blue.darker().darker());
+			g.fillRect(0, 0, 1024, 100);
+			g.setFont(Global.battleFont);
+			g.setColor(Color.white);
+			g.drawString("Mash [Z] to increase power!", 338, 32);
+			g.setColor(Color.gray);
+			g.drawString("Power: ", 338+2, 64+2);
+			g.setColor(Color.yellow);
+			g.drawString("Power: ", 338, 64);
+			int offsetX = 0;
+			int offsetY = 0;
+			if(Global.zDown)
+			{
+				g.setFont(Global.winFont2);
+				offsetX = -12;
+				offsetY = 12;
+			}
+			else
+			{
+				g.setFont(Global.battleFont);
+			}
+			g.setColor(Color.gray);
+			g.drawString(Integer.toString(Global.partnerPow[Global.SKRAPPS] + specialAttackDamage), 438+offsetX+2, 64+offsetY+2);
+			g.setColor(Color.yellow);
+			g.drawString(Integer.toString(Global.partnerPow[Global.SKRAPPS] + specialAttackDamage), 438+offsetX, 64+offsetY);
+			
+		}
+	}
+	
 	private void attack()
 	{
 		if(Global.attackPhase == 0 && Global.attacker == Attacker.Partner)
@@ -579,8 +646,7 @@ public class SkrappsBattler extends GameObject{
 	}
 	private void specialAttack()
 	{
-		System.out.println(attackMiniPhase);
-		if(attackMiniPhase ==0 )
+		if(attackMiniPhase == 0)
 		{
 			specialMenu();
 		}
@@ -593,7 +659,7 @@ public class SkrappsBattler extends GameObject{
 				attackMiniPhase--;
 				bm.specialType = 0;
 			}
-
+			System.out.println(special);
 			if(special == 1 && bm.partnerIsSelected)
 			{
 				Global.partnerSP[Global.SKRAPPS] -= 3;
@@ -610,138 +676,175 @@ public class SkrappsBattler extends GameObject{
 				bm.specialType = 0;
 				attackMiniPhase = 10;
 			}
-		}
-		if(attackMiniPhase == 10)
-		{
-			if(special == 0)
+			if(special >= 2)
 			{
-				if(getFrame(0) == 23)
+				if((bm.specialType == 1 && bm.monsterIsSelected) || (bm.specialType == 2 && bm.monsterIsSelected))
 				{
-					currentAnimation = BattleAnimation.skrappsBallThrow;
-					attackMiniPhase++;
-					setFrame(0,0);
-				}
-			}
-			if(special == 1)
-			{
-				if(getFrame(0) == 21)
-				{
-					currentAnimation = BattleAnimation.skrappsCast;
-					attackMiniPhase++;
+					System.out.println("SPECIAL: " + special);
+					Global.partnerSP[Global.SKRAPPS] -= specialAttacks.get(special-2).getCost();
+					special = specialAttacks.get(special-2).getId();
+					bm.specialType = 0;
+					attackMiniPhase = 2;
 				}
 			}
 		}
-		if(attackMiniPhase == 11)
+		if(attackMiniPhase >= 2 && special >= 2)
 		{
-			if(special == 0)
+			if(special == 3)
 			{
-				if(getFrame(0) == 14)
-				{
-					currentAnimation = BattleAnimation.skrappsHit0;
-					attackMiniPhase++;
-					setFrame(0,0);
-				}
-			}
-			if(special == 1)
-			{
-				if(bm.selectedPartner == 0)
-				{
-					AudioHandler.playSound(AudioHandler.seWoosh);
-					Global.simonHP += 5;
-					EyeCandy atk = new EyeCandy(bm.window, x+300, y-100, BattleAnimation.heart, bm,true,5,true,1,0,0);
-					atk.setRepeating(true);
-					bm.eyeCandy.add(atk);
-				}
-				if(bm.selectedPartner == 1)
-				{
-					AudioHandler.playSound(AudioHandler.seWoosh);
-					Global.williamHP += 5;
-					EyeCandy atk = new EyeCandy(bm.window, x+200, y-50, BattleAnimation.heart, bm,true,5,true,1,0,0);
-					atk.setRepeating(true);
-					bm.eyeCandy.add(atk);
-				}
-				if(bm.selectedPartner == 2)
-				{
-					AudioHandler.playSound(AudioHandler.seWoosh);
-					Global.partnerHP[Global.SKRAPPS] += 5;
-					EyeCandy atk = new EyeCandy(bm.window, x+50, y-50, BattleAnimation.heart, bm,true,5,true,1,0,0);
-					atk.setRepeating(true);
-					bm.eyeCandy.add(atk);
-				}
-				attackMiniPhase++;
+				fireballAttack();
 			}
 		}
-		if(attackMiniPhase == 12)
+		else if(special <= 1)
 		{
-			if(special == 0)
+			if(attackMiniPhase == 10)
 			{
-				if(getFrame(0) == 5)
+				if(special == 0)
 				{
-					currentAnimation = BattleAnimation.skrappsHit1;
+					if(getFrame(0) == 23)
+					{
+						currentAnimation = BattleAnimation.skrappsBallThrow;
+						attackMiniPhase++;
+						setFrame(0,0);
+					}
+				}
+				if(special == 1)
+				{
+					if(getFrame(0) == 21)
+					{
+						currentAnimation = BattleAnimation.skrappsCast;
+						attackMiniPhase++;
+					}
+				}
+			}
+			if(attackMiniPhase == 11)
+			{
+				if(special == 0)
+				{
+					if(getFrame(0) == 14)
+					{
+						currentAnimation = BattleAnimation.skrappsHit0;
+						attackMiniPhase++;
+						setFrame(0,0);
+					}
+				}
+				if(special == 1)
+				{
+					if(bm.selectedPartner == 0)
+					{
+						AudioHandler.playSound(AudioHandler.seWoosh);
+						Global.simonHP += 5;
+						EyeCandy atk = new EyeCandy(bm.window, x+300, y-100, BattleAnimation.heart, bm,true,5,true,1,0,0);
+						atk.setRepeating(true);
+						bm.eyeCandy.add(atk);
+					}
+					if(bm.selectedPartner == 1)
+					{
+						AudioHandler.playSound(AudioHandler.seWoosh);
+						Global.williamHP += 5;
+						EyeCandy atk = new EyeCandy(bm.window, x+200, y-50, BattleAnimation.heart, bm,true,5,true,1,0,0);
+						atk.setRepeating(true);
+						bm.eyeCandy.add(atk);
+					}
+					if(bm.selectedPartner == 2)
+					{
+						AudioHandler.playSound(AudioHandler.seWoosh);
+						Global.partnerHP[Global.SKRAPPS] += 5;
+						EyeCandy atk = new EyeCandy(bm.window, x+50, y-50, BattleAnimation.heart, bm,true,5,true,1,0,0);
+						atk.setRepeating(true);
+						bm.eyeCandy.add(atk);
+					}
 					attackMiniPhase++;
-					setFrame(0,0);
 				}
 			}
-			if(special == 1)
+			if(attackMiniPhase == 12)
 			{
-
-				if(getFrame(0)>=47)
+				if(special == 0)
 				{
-					this.setFrame(0, 0);
-					Global.attackPhase++;
-					attackMiniPhase = 0;
-					special = 0;
-					bm.partnerIsSelected = false;
-					bm.selectedPartner = 0;
+					if(getFrame(0) == 5)
+					{
+						currentAnimation = BattleAnimation.skrappsHit1;
+						attackMiniPhase++;
+						setFrame(0,0);
+					}
+				}
+				if(special == 1)
+				{
+	
+					if(getFrame(0)>=47)
+					{
+						this.setFrame(0, 0);
+						Global.attackPhase++;
+						attackMiniPhase = 0;
+						special = 0;
+						bm.partnerIsSelected = false;
+						bm.selectedPartner = 0;
+					}
 				}
 			}
-		}
-		if(attackMiniPhase == 13)
-		{
-			if(special == 0)
+			if(attackMiniPhase == 13)
 			{
-				if(getFrame(0) == 5)
+				if(special == 0)
 				{
-					AudioHandler.playSound(AudioHandler.seCrack);
-					currentAnimation = BattleAnimation.skrappsIdleBattle;
-					ballX = this.x+140;
-					ballY = this.y+0;
-					ballVisible = true;
+					if(getFrame(0) == 5)
+					{
+						AudioHandler.playSound(AudioHandler.seCrack);
+						currentAnimation = BattleAnimation.skrappsIdleBattle;
+						ballX = this.x+140;
+						ballY = this.y+0;
+						ballVisible = true;
+					}
+					if(ballVisible)
+					{
+						ballX+=20;
+						ballY-=2;
+					}
+					if(getFrame(0) == 23)
+					{
+						setFrame(0,0);
+						attackMiniPhase++;
+					}
 				}
-				if(ballVisible)
+			}
+			if(attackMiniPhase == 14)
+			{
+				if(special == 0)
 				{
 					ballX+=20;
 					ballY-=2;
-				}
-				if(getFrame(0) == 23)
-				{
-					setFrame(0,0);
-					attackMiniPhase++;
+					if(ballX >= bm.selectedMonster.x)
+					{
+						int toDeal = (int) (Global.partnerPow[Global.SKRAPPS]*3) - window.battleMode.selectedMonster.defense;
+						if(toDeal<0)
+						{
+							toDeal = 0;
+						}
+						window.battleMode.selectedMonster.takeDamage(toDeal);
+						window.battleMode.selectedMonster.partnerDealt[Global.SKRAPPS]+=toDeal;
+						
+						AudioHandler.playSound(AudioHandler.seDodge);
+						ballVisible = false;
+						attackMiniPhase++;
+						if(timedHit != 0)
+						{
+							Global.flinchAmount = 5;
+						}
+						else
+						{
+							Global.flinchAmount = 16;
+						}
+					}
 				}
 			}
-		}
-		if(attackMiniPhase == 14)
-		{
-			if(special == 0)
+			if(attackMiniPhase == 15)
 			{
-				ballX+=20;
-				ballY-=2;
-				if(ballX >= bm.selectedMonster.x)
+				if(this.specialBufferTime > 0)
 				{
-					int toDeal = (int) (Global.partnerPow[Global.SKRAPPS]*3) - window.battleMode.selectedMonster.defense;
-					if(toDeal<0)
-					{
-						toDeal = 0;
-					}
-					window.battleMode.selectedMonster.flinch();
-					window.battleMode.selectedMonster.hp-=toDeal;
-					window.battleMode.selectedMonster.damageDealt+=toDeal;
-					window.battleMode.selectedMonster.partnerDealt[Global.SKRAPPS]+=toDeal;
-					EyeCandy atk = new EyeCandy(window, window.battleMode.selectedMonster.x+32, window.battleMode.selectedMonster.y+64, BattleAnimation.hitAny, bm,true,toDeal);
-					atk.setRepeating(true);
-					bm.eyeCandy.add(atk);
-					AudioHandler.playSound(AudioHandler.seDodge);
-					ballVisible = false;
+					this.specialBufferTime--;
+				}
+				else
+				{
+					this.specialBufferTime = 15;
 					Global.attackPhase++;
 					attackMiniPhase = 0;
 					special = 0;
@@ -749,6 +852,83 @@ public class SkrappsBattler extends GameObject{
 			}
 		}
 	}
+	
+	private void fireballAttack()
+	{
+		System.out.println("PHASE " + attackMiniPhase);
+		if(attackMiniPhase == 2)
+		{
+			setFrame(0, 0);
+			setAnimation(BattleAnimation.skrappsCast);
+			attackMiniPhase++;
+		}
+		
+		if(attackMiniPhase == 3)
+		{
+			specialAttackHiddenVariable = 0;
+			if(getFrame(0) == 23)
+			{
+				AudioHandler.playSound(AudioHandler.seFire);
+				attackMiniPhase++;
+				ballX = this.x+146;
+				ballY = this.y+64;
+				ballVisible = true;
+				ballSprite = BattleAnimation.fire;
+			}
+		}
+		
+		if(attackMiniPhase == 4)
+		{
+			ballX+=10;
+			ballY-=1;
+			if(ballX >= bm.selectedMonster.x)
+			{
+				attackMiniPhase++;
+			}
+			if(this.currentAnimation == BattleAnimation.skrappsCast && getFrame(0) >= 47)
+			{
+				setAnimation(BattleAnimation.skrappsIdleBattle);
+			}
+			
+			if(Global.zPressed)
+			{
+				specialAttackHiddenVariable++;
+				
+			}
+			specialAttackDamage = specialAttackHiddenVariable;
+		}
+		
+		if(attackMiniPhase == 5)
+		{
+
+			int toDeal = (int) (Global.partnerPow[Global.SKRAPPS]) + specialAttackDamage;
+			if(toDeal<0)
+			{
+				toDeal = 0;
+			}
+			window.battleMode.selectedMonster.takeDamage(toDeal);
+			window.battleMode.selectedMonster.applyStatusEffect(Monster.STATUS_FIRE, toDeal/4);
+			window.battleMode.selectedMonster.partnerDealt[Global.SKRAPPS]+=toDeal;
+			AudioHandler.playSound(AudioHandler.seDodge);
+			ballVisible = false;
+			this.attackMiniPhase++;
+		}
+		if(attackMiniPhase == 6)
+		{
+			if(this.specialBufferTime > 0)
+			{
+				this.specialBufferTime--;
+			}
+			else
+			{
+				this.specialBufferTime = 15;
+				Global.attackPhase++;
+				attackMiniPhase = 0;
+				special = 0;
+			}
+		}
+	}
+	
 	private void specialMenu()
 	{
 		if(Global.zPressed && special == 0 && Global.partnerSP[Global.SKRAPPS] >= 2)
@@ -766,6 +946,17 @@ public class SkrappsBattler extends GameObject{
 			bm.specialType = 2;
 			Global.zPressed = false;
 		}
+		if(Global.zPressed && special > 1)
+		{
+			bm.monsterIsSelected = false;
+			if(Global.partnerSP[Global.SKRAPPS] >= specialAttacks.get(special-2).getCost())
+			{
+				System.out.println("Litty!");
+				attackMiniPhase++;
+				bm.specialType = specialAttacks.get(special-2).getType();
+			}
+			Global.zPressed = false;
+		}
 		if(Global.xPressed)
 		{
 			Global.attackPhase = 1;
@@ -778,6 +969,7 @@ public class SkrappsBattler extends GameObject{
 		{
 			specialSelections = 0;
 		}
+		specialSelections += specialAttacks.size();
 		if(Global.downPressed)
 		{
 			specialDir = 0;
@@ -837,6 +1029,19 @@ public class SkrappsBattler extends GameObject{
 		}
 		
 	}
+	
+	private int getSpecial(int id)
+	{
+		for(int i = 0; i < specialAttacks.size(); i++)
+		{
+			if(specialAttacks.get(i).getId() == id)
+			{
+				return i;
+			}
+		}
+		return -1;
+	}
+	
 	private void renderSpecialMenu(Graphics g)
 	{
 		if(attackMiniPhase == 0)
@@ -874,7 +1079,27 @@ public class SkrappsBattler extends GameObject{
 				g.drawString("3 SP", x+250, y-245);
 			}
 			
+			for(int i = 0; i < specialAttacks.size(); i++)
+			{
+
+				if(Global.partnerSP[Global.SKRAPPS] >= specialAttacks.get(i).getCost())
+				{
+					g.setColor(Color.blue.darker().darker());
+				}
+				else
+				{
+					g.setColor(Color.red.darker().darker());
+				}
+				g.drawString(specialAttacks.get(i).getName(), x+72, y-245+((i+1)*25));
+				g.drawString(specialAttacks.get(i).getCost() + " SP", x+250, y-245+((i+1)*25));
+			}
 			
 		}
+	}
+	
+	@Override
+	public int getPartnerId()
+	{
+		return Global.SKRAPPS;
 	}
 }

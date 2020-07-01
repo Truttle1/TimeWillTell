@@ -5,5 +5,5 @@ public enum ObjectId {
 	,NPC,Door,Warp,Item,IggyOverworld,VultOverworld,FlairmerOverworld
 	,CreatureyMini1,FlareMini1,Spike,Spike2,Flag,Foreground,Water,
 	ForegroundNPC,SkrappsBattler,Lava, RockstarOverworld,RageBattler, Video, Decoration, 
-	GarbzopOverworld, BaumberOverworld,DecorationOverGrass
+	GarbzopOverworld, BaumberOverworld,DecorationOverGrass,TrukofireOverworld
 }

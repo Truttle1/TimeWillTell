@@ -107,7 +107,11 @@ public class SpeechBubble {
 	}
 	public static void render(Graphics g)
 	{
-
+		
+		if(text.equals(""))
+		{
+			return;
+		}
 		if(Global.talking != 0 && !Store.running)
 		{
 			if(Global.talkingTo instanceof Sign && Game.currentWorld == WorldId.Digital)

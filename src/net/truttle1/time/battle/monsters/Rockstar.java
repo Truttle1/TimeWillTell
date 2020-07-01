@@ -191,7 +191,7 @@ public class Rockstar extends Monster{
 	public void flinch() 
 	{
 		setFrame(0,0);
-		window.battleMode.selectedMonster.currentAnimation = BattleAnimation.rockstarFlinch;
+		this.currentAnimation = BattleAnimation.rockstarFlinch;
 	}
 	
 	

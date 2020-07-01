@@ -8,6 +8,7 @@ import java.awt.Rectangle;
 import net.truttle1.time.battle.BattleAnimation;
 import net.truttle1.time.battle.EyeCandy;
 import net.truttle1.time.battle.monsters.Garbzop;
+import net.truttle1.time.battle.monsters.Trukofire;
 import net.truttle1.time.battle.monsters.Ursear;
 import net.truttle1.time.effects.Fade;
 import net.truttle1.time.main.AudioHandler;
@@ -71,6 +72,11 @@ public class GarbzopOverworld extends NPC{
 						window.battleMode.addMonster(new Garbzop(window,580,320,window.battleMode));
 						window.battleMode.addMonster(new Garbzop(window,720,320,window.battleMode));
 					}
+					if(amount == 3)
+					{
+						window.battleMode.addMonster(new Garbzop(window,480,320,window.battleMode));
+						window.battleMode.addMonster(new Trukofire(window,680,230,window.battleMode));
+						}
 					musicTime = AudioHandler.music.getMicrosecondPosition();
 					AudioHandler.playMusic(AudioHandler.battleMusic);
 					window.battleMode.startBattle();

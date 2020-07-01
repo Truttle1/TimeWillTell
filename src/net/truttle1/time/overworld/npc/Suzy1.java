@@ -199,7 +199,8 @@ public class Suzy1 extends NPC{
 				}
 				else if(Global.talking == 2)
 				{
-					if(currentAnimation == OverworldAnimation.suzyIdle)					{
+					if(currentAnimation == OverworldAnimation.suzyIdle)					
+					{
 						setFrame(0,0);
 					}
 					ursearAnimation = BattleAnimation.ursearIdleAnimation;

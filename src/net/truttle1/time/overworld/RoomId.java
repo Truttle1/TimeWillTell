@@ -6,5 +6,5 @@ public enum RoomId {
 	LomoBldg0,LomoBldg1,LomoBldg2,LomoBldg3, 
 	
 	Modern0, Modern1, Burger0, Modern2, Modern3, Burger1, Burger2,
-	Park
+	Park,ConvexPath0, ConvexPath1
 }

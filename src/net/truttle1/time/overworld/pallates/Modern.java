@@ -16,8 +16,12 @@ public class Modern {
 	public static Color invisibleWall = new Color(50,50,50);
 	public static Color garbzop0 = new Color(127,0,110);
 	public static Color garbzop1 = new Color(127,0,50);
+	public static Color garbzop2 = new Color(168,0,68);
 	public static Color tiles = new Color(255,255,255);
 	public static Color baumber0 = new Color(127,63,63);
+	public static Color stone2 = new Color(150,50,0);
+	
+	public static Color trukofire0 = new Color(72,0,255);
 	
 	public static Color grass = new Color(0,255,0);
 	public static Color tree2 = new Color(0,127,0);

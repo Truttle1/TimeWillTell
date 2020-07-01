@@ -222,7 +222,7 @@ public class Vult extends Monster{
 	public void flinch() 
 	{
 		setFrame(0,0);
-		window.battleMode.selectedMonster.currentAnimation = BattleAnimation.vultFlinch;
+		this.currentAnimation = BattleAnimation.vultFlinch;
 	}
 	
 	

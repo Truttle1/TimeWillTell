@@ -619,7 +619,7 @@ public class FlairmerRed extends Monster{
 	@Override
 	public void flinch() {
 		setFrame(0,0);
-		window.battleMode.selectedMonster.currentAnimation = BattleAnimation.flareRedFlinch;
+		this.currentAnimation = BattleAnimation.flareRedFlinch;
 		
 		
 	}

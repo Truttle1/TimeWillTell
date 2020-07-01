@@ -68,6 +68,13 @@ public class BattleAnimation {
 	public static volatile BufferedImage[] rockstarDie;
 	public static volatile BufferedImage[] rockstarFlinch;
 	
+	public static volatile BufferedImage[] trukofireIdle;
+	public static volatile BufferedImage[] trukofireBurn;
+	public static volatile BufferedImage[] trukofireWind;
+	public static volatile BufferedImage[] trukofireDash;
+	public static volatile BufferedImage[] trukofireFlinch;
+	public static volatile BufferedImage[] trukofireDie;
+	
 	public static volatile BufferedImage[] williamIdleAnimation;
 	public static volatile BufferedImage[] williamIdle2;
 	public static volatile BufferedImage[] williamIdle3;
@@ -134,6 +141,7 @@ public class BattleAnimation {
 	public static volatile BufferedImage[] flareFlyTalk;
 	public static volatile BufferedImage[] flareFlyBurn;
 
+	public static volatile BufferedImage[] burnFire;
 	public static volatile BufferedImage[] fire;
 	public static volatile BufferedImage[] note;
 	public static volatile BufferedImage[] ball;
@@ -297,9 +305,15 @@ public class BattleAnimation {
 		xIcon = loadAnimation("/fight/x_icon/x", 24, window);
 		cIcon = loadAnimation("/fight/c_icon/c", 24, window);
 		arrow = loadAnimation("/fight/arrow/arrow", 24, window);
+		
+		burnFire = loadAnimation("/fight/burnfire/fire", 24, window);
 		loaded = true;
 	}
 	public static BufferedImage[] loadAnimation(String path, int sub, Game window)
+	{
+		return loadAnimation(path,sub,window,0);
+	}
+	public static BufferedImage[] loadAnimation(String path, int sub, Game window, int extraZeros)
 	{
 		try
 		{
@@ -316,15 +330,15 @@ public class BattleAnimation {
 			{
 				if(i<9)
 				{
-					tempAnimation[i] = window.imageLoad.loadImage(path + "_0000" + (i+1) + ".png");
+					tempAnimation[i] = window.imageLoad.loadImage(path + "_" + getExtraZeros(extraZeros) + "0000" + (i+1) + ".png");
 				}
 				else if(i<99)
 				{
-					tempAnimation[i] = window.imageLoad.loadImage(path + "_000" + (i+1) + ".png");
+					tempAnimation[i] = window.imageLoad.loadImage(path + "_" + getExtraZeros(extraZeros) + "000" + (i+1) + ".png");
 				}
 				else if(i<999)
 				{
-					tempAnimation[i] = window.imageLoad.loadImage(path + "_00" + (i+1) + ".png");
+					tempAnimation[i] = window.imageLoad.loadImage(path + "_" + getExtraZeros(extraZeros) + "00" + (i+1) + ".png");
 				}
 			}
 			try {
@@ -339,6 +353,11 @@ public class BattleAnimation {
 		}
 	}
 
+	private static String getExtraZeros(int extraZeros)
+	{
+		return extraZeros==0?"":"0"+getExtraZeros(extraZeros-1);
+	}
+	
 	public static BufferedImage combineImages(int width, int height, BufferedImage[] iArray)
 	{
 		BufferedImage combined = new BufferedImage(width*iArray.length,height,BufferedImage.TYPE_INT_ARGB);
@@ -504,6 +523,14 @@ public class BattleAnimation {
 		baumberIncog = loadAnimation("/fight/baumber/incognito/incognito", 1, window);
 		baumberFlinch = loadAnimation("/fight/baumber/hit/hit", 6, window);
 		baumberDie = loadAnimation("/fight/baumber/die/die", 6, window);
+
+		trukofireIdle = loadAnimation("/fight/trukofire/idle/idle",12,window);
+		trukofireFlinch = loadAnimation("/fight/trukofire/flinch/flinch",12,window);
+		trukofireBurn = loadAnimation("/fight/trukofire/throwfire/fire",36,window);
+		trukofireWind = loadAnimation("/fight/trukofire/dash/windup",30,window);
+		trukofireDash = loadAnimation("/fight/trukofire/dash/dash",12,window);
+		trukofireDie = loadAnimation("/fight/trukofire/die/die",12,window);
+		fire = loadAnimation("/fight/flairmer/red/fire/fire", 24, window);
 		loadedDigitalAge = true;
 	}
 }

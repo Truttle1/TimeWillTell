@@ -266,7 +266,7 @@ public class Rage0 extends NPC{
 					Global.talking = 3;
 					Global.talkingTo = this;
 					skrappsFlipped = false;
-					SpeechBubble.talk("Skrapps: BE CAREFUL! What about this guy makes him seem trustworthy?/Like I said, his name is RAGE! Also, how do you know that he isn't trying to trick us!",Global.willFont);
+					SpeechBubble.talk("Skrapps, BE CAREFUL! What about this guy makes him seem trustworthy?/Like I said, his name is RAGE! Also, how do you know that he isn't trying to trick us!",Global.willFont);
 					skrapps = BattleAnimation.skrappsIdle2;
 					currentAnimation = OverworldAnimation.rageIdle;
 					player.currentAnimation = BattleAnimation.williamTalk;
@@ -305,7 +305,7 @@ public class Rage0 extends NPC{
 					Global.disableMovement = true;
 					Global.talking = 11;
 					Global.talkingTo = this;
-					SpeechBubble.talk("Well, if your little friend buys my spell, it's all yours. Since I am a/pacifist, my spells are focused on helping yourself rather than/harming others. The spell that I am currently offering is \"Heal.\"/It allows the user to restore 7 HP to himself or a friend for 3 SP.");
+					SpeechBubble.talk("Well, if your little friend buys my spell, it's all yours./ The spell that I am currently offering is \"Heal.\"/It allows the user to restore 7 HP to himself or a friend for 3 SP.");
 					skrappsFlipped = true;
 					skrapps = BattleAnimation.skrappsIdle2;
 					currentAnimation = OverworldAnimation.rageTalk;

@@ -1,0 +1,6 @@
+-Increase Simon's weight in platforming
+-Camera Errors
+-Bigger counter window
+-Press a button to get out of the GameOver screen
+-Jump+Menu
+-Flee?

@@ -26,6 +26,7 @@ public class TitleMode extends GameMode{
 	private static int introFade = 0;
 	private static int introY = 100;
 	public static boolean demoEnded;
+	private static int selectedScreen = -1;
 	private double[] currentFrame = new double[9];
  	public TitleMode(Game window) {
  		
@@ -72,8 +73,14 @@ public class TitleMode extends GameMode{
 	@Override
 	public void render(Graphics g) {
 
-		if(Quest.quests[Quest.LOMO] >= Global.LOMOCONSTANT)
+		if(Quest.quests[Quest.FINDCREATUREY] >= 1)
 		{
+			selectedScreen = 10;
+			g.drawImage(screens[10],0,0,null);
+		}
+		else if(Quest.quests[Quest.LOMO] >= Global.LOMOCONSTANT)
+		{
+			selectedScreen = 0;
 			g.drawImage(screens[0],0,0,null);
 		}
 		else if(Quest.quests[Quest.PYRUZ_S] >= 2)
@@ -122,6 +129,10 @@ public class TitleMode extends GameMode{
 			{
 				g.setColor(Color.gray);
 			}
+			else if(selectedScreen == 10)
+			{
+				g.setColor(Color.cyan);
+			}
 			else
 			{
 				g.setColor(Color.white);
@@ -130,7 +141,11 @@ public class TitleMode extends GameMode{
 		}
 		else
 		{
-			if(Quest.quests[Quest.LOMO] >= Global.LOMOCONSTANT)
+			if(selectedScreen == 10)
+			{
+				g.setColor(Color.cyan);
+			}
+			else if(Quest.quests[Quest.LOMO] >= Global.LOMOCONSTANT)
 			{
 				g.setColor(Color.white);
 			}
@@ -203,7 +218,7 @@ public class TitleMode extends GameMode{
 			//g.drawString("By the way, that person will be met within the first 20 or so minutes", 20, introY+4360);
 			//g.drawString("of the game.", 20, introY+4390);
 			g.drawString("Anyway, that's all I've got for you right now. Press [Z] to begin your", 20, introY+4480);
-			g.drawString("epic and serious jorney!...actually, it's not that epic...or serious...", 20, introY+4510);
+			g.drawString("epic and serious journey!...actually, it's not that epic...or serious...", 20, introY+4510);
 			g.drawString("Or don't press [Z] and listen to this MIDI track for the rest of eternity...", 20, introY+4540);
 			if(introY>-4000)
 			{

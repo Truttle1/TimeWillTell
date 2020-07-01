@@ -96,9 +96,10 @@ public class BurgerHouseRegister extends NPC{
 			Store.running = false;
 			Global.talking = 3;
 			guy = OverworldAnimation.cityNPC2Idle;
-			Store.initStore(1);
+			Store.initStore(2);
 			Store.setItem(0, Store.BURGER, 9);
 			Store.setItem(1, Store.FRIES, 7);
+			Store.setItem(2, Store.NUGGETS, 8);
 			//Store.setItem(3, 3, 15);
 			om.pauseMenuOpen = false;
 		}

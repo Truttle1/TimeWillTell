@@ -49,13 +49,14 @@ public class BattleMode extends GameMode{
 	public boolean partnerIsSelected;
 	public int selectedPartner;
 	public int[] xpGainedPartner = new int[99];
-	
-	public BattleMode(Game window) {
+	public BattleMode(Game window) 
+	{
 		super(window);
 		phaseOneStarted = false;
 		partnerSelections[Global.SKRAPPS] = 2;
 	}
 
+	
 	private void tutorial()
 	{
 		if(Global.tutorialBattlePhase == 0)
@@ -406,7 +407,19 @@ public class BattleMode extends GameMode{
 		}
 		for(int i=0; i<objects.size();i++)
 		{
-			objects.get(i).tick();
+			if(objects.get(i) instanceof Monster && Global.attacker == Attacker.Monsters && ((Monster)objects.get(i)).thisAttacking() && !((Monster)objects.get(i)).getDidStatusEffects())
+			{
+				((Monster)objects.get(i)).doStatus();
+			}
+			else
+			{
+				objects.get(i).tick();
+			}
+			
+			if(objects.get(i) instanceof Monster && Global.attacker != Attacker.Monsters)
+			{
+				((Monster)objects.get(i)).resetStatus();
+			}
 		}
 
 		for(int i=0; i<eyeCandy.size();i++)
@@ -422,49 +435,56 @@ public class BattleMode extends GameMode{
 		{
 			selectPartner();
 		}
-		if((Global.attacker != Attacker.Monsters && Global.attackPhase == 1)|| (Global.attacker != Attacker.Monsters && specialType == 1 && attackSelection == AttackSelection.Special))
+		else if((Global.attacker != Attacker.Monsters && Global.attackPhase == 1)|| (Global.attacker != Attacker.Monsters && specialType == 1 && attackSelection == AttackSelection.Special))
 		{
+			selectMonster();
+		}
+		
+	}
+	
+	
+	private void selectMonster()
+	{
 
-			if(Global.xPressed)
+		if(Global.xPressed)
+		{
+			Global.attackPhase--;
+		}
+		if(Global.leftPressed)
+		{
+			if(selectedMonsterID == 0)
 			{
-				Global.attackPhase--;
-			}
-			if(Global.leftPressed)
-			{
-				if(selectedMonsterID == 0)
-				{
-					selectedMonsterID = amountOfMonsters;
-				}
-				else
-				{
-					selectedMonsterID--;
-				}
-			}
-			else if(Global.rightPressed)
-			{
-				if(selectedMonsterID == amountOfMonsters)
-				{
-					selectedMonsterID = 0;
-				}
-				else
-				{
-					selectedMonsterID++;
-				}
-			}
-			if(Global.attackPhase == 1)
-			{
-				if(Global.zPressed && phaseOneStarted)
-				{
-					Global.attackPhase++;
-				}
-				phaseOneStarted = true;
+				selectedMonsterID = amountOfMonsters;
 			}
 			else
 			{
-				if(Global.zPressed)
-				{
-					monsterIsSelected = true;
-				}
+				selectedMonsterID--;
+			}
+		}
+		else if(Global.rightPressed)
+		{
+			if(selectedMonsterID == amountOfMonsters)
+			{
+				selectedMonsterID = 0;
+			}
+			else
+			{
+				selectedMonsterID++;
+			}
+		}
+		if(Global.attackPhase == 1)
+		{
+			if(Global.zPressed && phaseOneStarted)
+			{
+				Global.attackPhase++;
+			}
+			phaseOneStarted = true;
+		}
+		else
+		{
+			if(Global.zPressed)
+			{
+				monsterIsSelected = true;
 			}
 		}
 	}
@@ -621,6 +641,10 @@ public class BattleMode extends GameMode{
 			if(Global.attacker == Attacker.Simon && !(objects.get(i) instanceof SimonBattler))
 			{
 				objects.get(i).render(g);
+				if(objects.get(i) instanceof Monster)
+				{
+					((Monster)objects.get(i)).preRender(g);
+				}
 			}
 			else if(Global.attacker == Attacker.Monsters && !(objects.get(i) instanceof Monster))
 			{
@@ -629,10 +653,18 @@ public class BattleMode extends GameMode{
 			else if(Global.attacker == Attacker.William && !(objects.get(i) instanceof WilliamBattler))
 			{
 				objects.get(i).render(g);
+				if(objects.get(i) instanceof Monster)
+				{
+					((Monster)objects.get(i)).preRender(g);
+				}
 			}
 			else if(Global.attacker == Attacker.Partner && !(objects.get(i) instanceof SkrappsBattler))
 			{
 				objects.get(i).render(g);
+				if(objects.get(i) instanceof Monster)
+				{
+					((Monster)objects.get(i)).preRender(g);
+				}
 			}
 		}
 		if(Global.attacker == Attacker.Simon)
@@ -684,6 +716,7 @@ public class BattleMode extends GameMode{
 			{
 				if(objects.get(i) instanceof Monster)
 				{
+					((Monster)objects.get(i)).preRender(g);
 					objects.get(i).render(g);
 				}
 			}

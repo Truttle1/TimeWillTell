@@ -62,7 +62,21 @@ public abstract class Monster extends GameObject{
 	protected boolean showingProjectile;
 	private int stickResistance;
 	private int fireResistance;
-	public Monster(Game window, int x, int y, BattleMode bm) {
+	private int statusEffect = -1;
+	
+	public static final int STATUS_FIRE = 1;
+	
+	private int statusEffectTurns = 0;
+	private boolean didStatusEffects;
+	private int statusEffectCounter;
+	
+	public boolean getDidStatusEffects()
+	{
+		return didStatusEffects;
+	}
+	
+	public Monster(Game window, int x, int y, BattleMode bm) 
+	{
 		super(window);
 		startX = x;
 		startY = y;
@@ -75,6 +89,41 @@ public abstract class Monster extends GameObject{
 		for(int i=0; i<99;i++)
 		{
 			partnerDealt[i] = 0;
+		}
+	}
+	
+	protected void checkIfDead(BufferedImage[] dieAnimation)
+	{
+
+		if(hp<=0 && (Global.attacker != killedAttacker)) 
+		{
+			bm.xpGainedSimon+=(double)xp*((double)simonDealt/damageDealt);
+			bm.xpGainedWilliam+=(double)xp*((double)williamDealt/damageDealt);
+			bm.xpGainedPartner[Global.currentPartner]+=(double)xp*((double)partnerDealt[Global.currentPartner]/damageDealt);
+			//Global.partnerXP[Global.currentPartner] += bm.xpGainedPartner[Global.currentPartner];
+			bm.moneyGained += money;
+			Global.money += money;
+			EyeCandy die = new EyeCandy(window, x, y, dieAnimation, bm);
+			die.setRepeating(false);
+			bm.eyeCandy.add(die);
+			for(int i = monsterID; i<=bm.amountOfMonsters;++i)
+			{
+				for(int j=0; j<bm.objects.size();j++)
+				{
+					if(bm.objects.get(j) instanceof Monster)
+					{
+						Monster m = (Monster) bm.objects.get(j);
+						if(m.monsterID == i)
+						{
+							m.monsterID--;
+						}
+					}
+				}
+			}
+			bm.amountOfMonsters--;
+			bm.attackingMonster = 0;
+			bm.objects.remove(this);
+			
 		}
 	}
 
@@ -92,7 +141,7 @@ public abstract class Monster extends GameObject{
 	
 	public boolean allPlayersDead()
 	{
-		return (!Global.hasSimon || Global.simonHP <= 0) && (!Global.hasWilliam || Global.williamHP <= 0) && (!Global.hasPartner || Global.partnerHP[0] <= 0);
+		return (!Global.hasSimon || Global.simonHP <= 0) && (!Global.hasWilliam || Global.williamHP <= 0) && (!Global.hasPartner || Global.partnerHP[Global.SKRAPPS] <= 0);
 	}
 	
 	protected void selectAttacking()
@@ -131,10 +180,10 @@ public abstract class Monster extends GameObject{
 		else if(Global.hasPartner && Global.currentPartner != Global.RAGE && Math.random()<0.38)
 		{
 			attacking = 2;
-
+			System.out.println("BEEP BEEP BEEP");
 			for(int i=0; i<bm.objects.size(); i++)
 			{
-				if (bm.objects.get(i).id == ObjectId.SkrappsBattler)
+				if (bm.objects.get(i).id == ObjectId.SkrappsBattler || bm.objects.get(i) instanceof SkrappsBattler)
 				{
 					SkrappsBattler temp = (SkrappsBattler) bm.objects.get(i);
 					if(!temp.dead)
@@ -523,7 +572,7 @@ public abstract class Monster extends GameObject{
 	protected void attackFrameBasedRange(int candyFrame, int frame0, int frame1, int damage,BufferedImage[] hitAnimation)
 	{
 		attackFrameBasedRange(candyFrame,frame0,frame1,damage,hitAnimation,AudioHandler.sePunch);
-		}
+	}
 	protected void attackFrameBasedRange(int candyFrame, int frame0, int frame1, int damage,BufferedImage[] hitAnimation, File sound)
 	{
 		if(!currentAnimation.equals(hitAnimation))
@@ -659,5 +708,132 @@ public abstract class Monster extends GameObject{
 		
 		return dist;
 	}
+	
+	public void takeDamage(int amount)
+	{
+		hp -= (amount - defense);
+		damageDealt += amount;
+		this.flinch();
+		EyeCandy atk = new EyeCandy(window, this.x+32, this.y+64, BattleAnimation.hitAny, bm,true,(amount-defense));
+		atk.setRepeating(false);
+		bm.eyeCandy.add(atk);
+	}
+	
+	protected void damageWilliam(GameObject attacking, int damage)
+	{
+		if(attacking.dodging)
+		{
+			attacking.currentAnimation = BattleAnimation.williamHitAnimation;
+			Global.williamHP -= damage*2;
+			EyeCandy atk = new EyeCandy(window, attacking.x+100, attacking.y+64,BattleAnimation.hitAny, bm, true, damage*2);
+			atk.setRepeating(true);
+			bm.eyeCandy.add(atk);
+		}
+		else
+		{
+			attacking.currentAnimation = BattleAnimation.williamHitAnimation;
+			Global.williamHP -= damage;
+			EyeCandy atk = new EyeCandy(window, attacking.x+100, attacking.y+64,BattleAnimation.hitAny, bm, true, damage);
+			atk.setRepeating(true);
+			bm.eyeCandy.add(atk);
+		}
+	}
 
+	protected void damageSimon(GameObject attacking, int damage)
+	{
+		attacking.currentAnimation = BattleAnimation.simonHitAnimation;
+		Global.simonHP -= damage;
+		EyeCandy atk = new EyeCandy(window, attacking.x+100, attacking.y+64,BattleAnimation.hitAny, bm, true, damage);
+		atk.setRepeating(false);
+		bm.eyeCandy.add(atk);
+		attacking.setFrame(0,0);
+		attacking.currentAnimation = BattleAnimation.simonHitAnimation;
+		attacking.setFrame(0,0);
+	}
+
+	protected void damagePartner(GameObject attacking, int damage)
+	{
+		if(attacking.getPartnerId() == Global.SKRAPPS)
+		{
+			attacking.currentAnimation = BattleAnimation.skrappsFlinch;
+		}
+		Global.partnerHP[attacking.getPartnerId()] -= damage;
+		EyeCandy atk = new EyeCandy(window, attacking.x+100, attacking.y+64,BattleAnimation.hitAny, bm, true, damage);
+		atk.setRepeating(false);
+		bm.eyeCandy.add(atk);
+		attacking.setFrame(0,0);
+	}
+	
+	protected void nextMonster(BufferedImage[] idle)
+	{
+		if(this.monsterID >= bm.amountOfMonsters)
+		{
+			currentAnimation = idle;
+			Global.attacker = Attacker.Simon;
+			Global.attackPhase = 0;
+			bm.selectedMonsterID = 0;
+		}
+		else
+		{
+			bm.attackingMonster++;
+			Global.attackPhase = 0;
+		}
+	}
+
+	public boolean thisAttacking()
+	{
+		return (bm.attackingMonster == this.monsterID);
+	}
+	
+	public void doStatus()
+	{
+		if(this.statusEffect == STATUS_FIRE)
+		{
+			if(statusEffectCounter == 0)
+			{
+				takeDamage(1+defense);
+			}
+			statusEffectCounter++;
+			
+			if(statusEffectCounter >= 24)
+			{
+				statusEffectCounter = 0;
+				statusEffectTurns--;
+				didStatusEffects = true;
+				
+				if(statusEffectTurns <= 0)
+				{
+					statusEffect = -1;
+				}
+			}
+		}
+		else
+		{
+			didStatusEffects = true;
+		}
+	}
+	
+	public void resetStatus()
+	{
+		didStatusEffects = false;
+	}
+	
+	public void preRender(Graphics g)
+	{
+		if(statusEffectTurns > 0)
+		{
+			animate(x+40, y-10, BattleAnimation.burnFire, 4, g);
+			g.setFont(Global.winFont2);
+			g.setColor(Color.gray);
+			g.drawString(Integer.toString(statusEffectTurns), x+102, y+2);
+			g.setColor(Color.yellow);
+			g.drawString(Integer.toString(statusEffectTurns), x+100, y);
+		}
+	}
+	
+	public void applyStatusEffect(int status, int turns)
+	{
+		statusEffect = status;
+		statusEffectTurns = turns;
+	}
 }

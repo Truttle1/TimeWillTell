@@ -576,7 +576,7 @@ public class FlairmerGreen extends Monster{
 	@Override
 	public void flinch() {
 		setFrame(0,0);
-		window.battleMode.selectedMonster.currentAnimation = BattleAnimation.flareGreenFlinch;
+		this.currentAnimation = BattleAnimation.flareGreenFlinch;
 		
 		
 	}

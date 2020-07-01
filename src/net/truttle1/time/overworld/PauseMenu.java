@@ -218,6 +218,8 @@ public class PauseMenu {
 			if(layer == 0)
 			{
 				mainSelection();
+				topItem = 0;
+				bottomItem = 0;
 				Global.zPressed = false;
 				break PressZ;
 			}
@@ -412,6 +414,9 @@ public class PauseMenu {
 			}
 		}
 	}
+	
+	private int topItem = 0;
+	private int bottomItem = 0;
 	private void drawMenuItems(Graphics g)
 	{
 		int x = 82;
@@ -420,7 +425,8 @@ public class PauseMenu {
 		g.setColor(Color.red);
 		g.fillRect(x-16, y-300, 250, 160);
 		int yOff = 0;
-		for(int i=0; i<Global.items.length; i++)
+		int itemsCounted = 0;
+		for(int i=topItem; i<Global.items.length; i++)
 		{
 			if(Global.items[i]>0)
 			{
@@ -433,9 +439,44 @@ public class PauseMenu {
 				g.drawString(Store.itemNames[i], x-2, y-(272-yOff));
 				g.drawString("x" + Integer.toString(Global.items[i]), x+180, y-(272-yOff));
 				yOff += 22;
+				itemsCounted++;
+			}
+			if(topItem > selection[ITEMS])
+			{
+				topItem = selection[ITEMS];
+			}
+			
+			if(itemsCounted >= 6)
+			{
+				bottomItem = i;
+				if(bottomItem < selection[ITEMS])
+				{
+					topItem = findTopItem(bottomItem);
+				}
+				break;
 			}
 		}
 	}
+	
+	private int findTopItem(int bottomItem)
+	{
+		int topItem = bottomItem;
+		int itemsCounted = 0;
+		while(itemsCounted < 5)
+		{
+			topItem--;
+			if(topItem < 0)
+			{
+				return 0;
+			}
+			if(Global.items[bottomItem] > 0)
+			{
+				itemsCounted++;
+			}
+		}
+		return topItem;
+	}
+	
 	private void drawMenuItemOptions(Graphics g)
 	{
 		g.setColor(Color.red);

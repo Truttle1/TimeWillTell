@@ -78,10 +78,22 @@ public class DigitalAgeWarps {
 		if(room.id == RoomId.Park)
 		{
 			room.setupWarp(0, 900, OverworldMode.modern2, 6900, 900);
+			room.setupWarp(3900, 900, OverworldMode.modern5, 200, 1300);
 			room.addObject(new Sign(room.om.window, 800, 1000, room.om,"Aqua City Park!/We have trees here since not having green space in cities is \"bad.\"//WEST: Convex Inc."));
 			room.addObject(new ModernCarl1(room.om.window, 1700, 900, room.om));
 			room.addObject(new CityNPC(room.om.window,2900,900,room.om,4,"Did you know that, about 5000 years ago, these apple trees/used to grow PURPLE apples?/The wonders of genetic engineering made the apples a much more/appealing red! Science is amazing!"));
 		}
+		if(room.id == RoomId.ConvexPath0)
+		{
+			room.setupWarp(0, 1300, OverworldMode.park, 3700, 900);
+			room.setupWarp(4700, 500, OverworldMode.modern6, 200, 1100);
+		}
+		if(room.id == RoomId.ConvexPath1)
+		{
+			room.setupWarp(0, 1100, OverworldMode.modern5, 4500, 500);
+			room.addObject(new Sign(room.om.window, 400, 1200, room.om,"Convex Inc. Up Ahead./FUN FACT: The Convex Inc. building was built on Mt. Pyruz, an inactive/volcano. The last time it erupted was 5000 years ago. The next time it/erupts, the world will probably be over anyway."));
+		}
+		
 		if(room.id == RoomId.Burger0)
 		{
 			burgerHouse(room,OverworldMode.modern1,2100,4400);

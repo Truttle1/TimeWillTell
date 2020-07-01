@@ -31,7 +31,7 @@ public class Baumber extends Monster{
 		currentAnimation = BattleAnimation.baumberIdle;
 		dodgeType = 0;
 		xp = 44;
-		money = 10;
+		money = 16;
 		heightMod = 100;
 		}
 
@@ -40,7 +40,7 @@ public class Baumber extends Monster{
 	@Override
 	public void tick() {
 		super.boxOffsetX = -30;
-		heightMod = 110;
+		heightMod = 40;
 		information = "That's not just a tree, it's a Baumber! Max HP: 15; Attack: 3; Defense: 1;/These evil trees found in Aqua City hurl bombs at you./Those bombs deal 3 damage. Skrapps can dodge them by ducking, but everyone else must/take damage. That's not good!";
 		
 		if(super.hp <= 0 && killedAttacker == null)
@@ -51,36 +51,7 @@ public class Baumber extends Monster{
 		{
 			bm.eyeCandy.remove(dodgeCandy);
 		}
-		if(super.hp<=0 && (Global.attacker != killedAttacker)) 
-		{
-			bm.xpGainedSimon+=(double)xp*((double)simonDealt/damageDealt);
-			bm.xpGainedWilliam+=(double)xp*((double)williamDealt/damageDealt);
-			bm.xpGainedPartner[Global.currentPartner]+=(double)xp*((double)partnerDealt[Global.currentPartner]/damageDealt);
-			//Global.partnerXP[Global.currentPartner] += bm.xpGainedPartner[Global.currentPartner];
-			bm.moneyGained += money;
-			Global.money += money;
-			EyeCandy die = new EyeCandy(window, x, y, BattleAnimation.baumberDie, bm);
-			die.setRepeating(false);
-			bm.eyeCandy.add(die);
-			for(int i = super.monsterID; i<=bm.amountOfMonsters;++i)
-			{
-				for(int j=0; j<bm.objects.size();j++)
-				{
-					if(bm.objects.get(j) instanceof Monster)
-					{
-						Monster m = (Monster) bm.objects.get(j);
-						if(m.monsterID == i)
-						{
-							m.monsterID--;
-						}
-					}
-				}
-			}
-			bm.amountOfMonsters--;
-			bm.attackingMonster = 0;
-			bm.objects.remove(this);
-			
-		}
+		checkIfDead(BattleAnimation.baumberDie);
 		checkSelected();
 		if(Global.attacker != Attacker.Monsters && currentAnimation == BattleAnimation.baumberFlinch && getFrame(0)>=5)
 		{
@@ -191,7 +162,7 @@ public class Baumber extends Monster{
 	@Override
 	public void flinch() {
 		setFrame(0,0);
-		window.battleMode.selectedMonster.currentAnimation = BattleAnimation.baumberFlinch;
+		this.currentAnimation = BattleAnimation.baumberFlinch;
 		
 		
 	}

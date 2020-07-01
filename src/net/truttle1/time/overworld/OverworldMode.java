@@ -60,6 +60,8 @@ public class OverworldMode extends GameMode{
 	public static Room modern2;
 	public static Room modern3;
 	public static Room park;
+	public static Room modern5;
+	public static Room modern6;
 
 	public static Room burgerHouse0;
 	public static Room burgerHouse1;
@@ -73,6 +75,7 @@ public class OverworldMode extends GameMode{
 	final Color PYBACKGROUND = new Color(136,67,26);
 	final Color DGBACKGROUND = new Color(128,255,255);
 	final Color BHBACKGROUND = new Color(255,0,0);
+	final Color CONVEX_PATH_BACKGROUND = new Color(134,38,0);
 	public static GameObject currentWarp;
 	public volatile ArrayList<GameObject> objects = new ArrayList<GameObject>();
 	public OverworldMode(Game window) {
@@ -100,6 +103,8 @@ public class OverworldMode extends GameMode{
 		BufferedImage ds2 = window.imageLoad.loadImage("/overworld/rooms/modern2.png");
 		BufferedImage ds3 = window.imageLoad.loadImage("/overworld/rooms/modern3.png");
 		BufferedImage ds4 = window.imageLoad.loadImage("/overworld/rooms/modern4.png");
+		BufferedImage ds5 = window.imageLoad.loadImage("/overworld/rooms/modern5.png");
+		BufferedImage ds6 = window.imageLoad.loadImage("/overworld/rooms/modern6.png");
 		
 		BufferedImage bh = window.imageLoad.loadImage("/overworld/rooms/burgerhouse.png");
 		
@@ -130,6 +135,8 @@ public class OverworldMode extends GameMode{
 		modern2 = new Room(ds2,this,false,Game.cityFaded,WorldSubType.Modern,RoomId.Modern2,AudioHandler.metro);
 		modern3 = new Room(ds3,this,false,Game.cityFaded,WorldSubType.Modern,RoomId.Modern3,AudioHandler.metro);
 		park = new Room(ds4,this,false,Game.cityFaded,WorldSubType.Modern,RoomId.Park,AudioHandler.metro);
+		modern5 = new Room(ds5,this,false,Game.convexPath,WorldSubType.ConvexPath,RoomId.ConvexPath0,AudioHandler.metroMinor);
+		modern6 = new Room(ds6,this,false,Game.convexPath,WorldSubType.ConvexPath,RoomId.ConvexPath1,AudioHandler.metroMinor);
 		
 		burgerHouse0 = new Room(bh,this,false,Game.burgerHouse,WorldSubType.BurgerHouse,RoomId.Burger0,AudioHandler.metro);
 		burgerHouse1 = new Room(bh,this,false,Game.burgerHouse,WorldSubType.BurgerHouse,RoomId.Burger1,AudioHandler.metro);
@@ -152,6 +159,13 @@ public class OverworldMode extends GameMode{
 			if(AudioHandler.currentMusic.equals(AudioHandler.lomoMusic))
 			{
 				AudioHandler.playMusic(AudioHandler.lomoDeserted);
+			}
+		}
+		if(Quest.quests[Quest.LOMO] >= Global.LOMOCONSTANT && (currentRoom == RoomId.Pyruz3))
+		{
+			if(!AudioHandler.currentMusic.equals(AudioHandler.cutscene2))
+			{
+				AudioHandler.playMusic(AudioHandler.cutscene2);
 			}
 		}
 		if(Quest.quests[Quest.LOMO]<Global.LOMOCONSTANT && Global.currentRoom.world == WorldSubType.LomoVillage)
@@ -249,6 +263,10 @@ public class OverworldMode extends GameMode{
 		{
 			g.setColor(PYBACKGROUND);
 		}
+		if(Global.currentRoom.world == WorldSubType.ConvexPath)
+		{
+			g.setColor(CONVEX_PATH_BACKGROUND);
+		}
 		if(Global.currentRoom.world == WorldSubType.LomoVillage)
 		{
 			if(Quest.quests[Quest.LOMO]<Global.LOMOCONSTANT )
@@ -293,8 +311,9 @@ public class OverworldMode extends GameMode{
 		g.translate(-tx, -ty);
 		for(int i=0; i<objects.size();i++)
 		{
-			if(!(objects.get(i).id == ObjectId.Decoration) && objects.get(i).id != ObjectId.Video  && objects.get(i).id != ObjectId.BaumberOverworld  && objects.get(i).id != ObjectId.GarbzopOverworld && objects.get(i).id != ObjectId.Grass && objects.get(i).id != ObjectId.NPC &&objects.get(i).id != ObjectId.Door && objects.get(i).id != ObjectId.Item && objects.get(i).id != ObjectId.Player && objects.get(i).id != ObjectId.UrsearOverworld && objects.get(i).id != ObjectId.RockstarOverworld && objects.get(i).id != ObjectId.FlairmerOverworld && objects.get(i).id != ObjectId.IggyOverworld  && objects.get(i).id != ObjectId.Foreground  && objects.get(i).id != ObjectId.ForegroundNPC
-					&& objects.get(i).id != ObjectId.Warp)
+			if(!(objects.get(i).id == ObjectId.Decoration) && objects.get(i).id != ObjectId.Video  && objects.get(i).id != ObjectId.BaumberOverworld  && objects.get(i).id != ObjectId.GarbzopOverworld && objects.get(i).id != ObjectId.Grass && objects.get(i).id != ObjectId.NPC &&objects.get(i).id != ObjectId.Door && objects.get(i).id != ObjectId.Item && objects.get(i).id != ObjectId.Player && objects.get(i).id != ObjectId.UrsearOverworld && objects.get(i).id != ObjectId.RockstarOverworld 
+					&& objects.get(i).id != ObjectId.FlairmerOverworld && objects.get(i).id != ObjectId.IggyOverworld  && objects.get(i).id != ObjectId.Foreground  && objects.get(i).id != ObjectId.ForegroundNPC
+					&& objects.get(i).id != ObjectId.Warp && objects.get(i).id != ObjectId.TrukofireOverworld)
 			{
 				objects.get(i).render(g);
 			}
@@ -403,6 +422,10 @@ public class OverworldMode extends GameMode{
 				objects.get(i).render(g);
 			}
 			if(objects.get(i).id == ObjectId.BaumberOverworld)
+			{
+				objects.get(i).render(g);
+			}
+			if(objects.get(i).id == ObjectId.TrukofireOverworld)
 			{
 				objects.get(i).render(g);
 			}

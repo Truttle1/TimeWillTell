@@ -86,7 +86,7 @@ public class LomoJuiceBar extends NPC{
 				Global.talkingTo = this;
 				Global.talking = 1;
 				Global.disableMovement = true;
-				SpeechBubble.talk("YES! I'M FINALLY FREE!!! I finally managed to escape Ignacio's prison!/Now who are you, little one? Are you a paying customer?");
+				SpeechBubble.talk("What happened?/I came back to my shop, and the entire town was gone.../huh.../Now who are you, little one? Are you a paying customer?");
 			}
 			if(Global.talking == 2 && Global.talkingTo == this)
 			{

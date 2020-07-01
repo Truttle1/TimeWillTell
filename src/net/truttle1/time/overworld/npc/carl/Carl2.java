@@ -82,7 +82,7 @@ public class Carl2 extends Carl{
 			{
 				Global.talking = 15;
 				currentAnimation = OverworldAnimation.carlTalk;
-				SpeechBubble.talk("Personally, I think they would've headed leftward. The enterance/to Mt. Pyruz is to the right, and due to the bully inhabiting/the mountain, I think they'd want to get as far away as possible./After all, what other reason would they have to leave?",Global.carlFont);
+				SpeechBubble.talk("Personally, I think they would've headed leftward. The entrance/to Mt. Pyruz is to the right, and due to the bully inhabiting/the mountain, I think they'd want to get as far away as possible./After all, what other reason would they have to leave?",Global.carlFont);
 				
 			}
 			if(Global.talking == 16)

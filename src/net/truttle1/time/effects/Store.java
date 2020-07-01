@@ -36,6 +36,7 @@ public class Store {
 	public static final int BURGER = 6;
 	public static final int FRIES = 7;
 	public static final int SODA = 8;
+	public static final int NUGGETS = 9;
 	
 	//Key Items
 	public static final int KEY = 0;
@@ -326,6 +327,10 @@ public class Store {
 			{
 				sp = 5;
 			}
+			if(item == NUGGETS)
+			{
+				sp = 6;
+			}
 			if(user instanceof WilliamBattler || noUserString.contains("William"))
 			{
 				if(displaying)
@@ -540,6 +545,11 @@ public class Store {
 		itemDescriptions[SPSTICK] = "An SP-flavored stick of some type of meat. (Chicken, probably.)/And yes, SP now has a flavor, it's a pretty good flavor actually.../Restores 5 SP!";
 		itemType[SPSTICK] = 4;
 		itemImage[SPSTICK] = loader.loadImage("/overworld/items/drumstick.png");
+		
+		itemNames[NUGGETS] = "Nuggets";
+		itemDescriptions[NUGGETS] = "Made of all-natural totally not artificial chicken! (I think...)/Restore 6 SP.";
+		itemType[NUGGETS] = 4;
+		itemImage[NUGGETS] = loader.loadImage("/overworld/items/nuggets.png");
 
 		keyItemNames[KEY] = "Key";
 		keyItemImage[KEY] = loader.loadImage("/overworld/items/key.png");

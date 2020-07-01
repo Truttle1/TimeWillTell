@@ -39,6 +39,7 @@ public class AudioHandler {
 	public static File throneRoom;
 	public static File actOneFinalBoss;
 	public static File metro;
+	public static File metroMinor;
 	public static File currentMusic = null;
 
 	public static File seJump;
@@ -93,6 +94,7 @@ public class AudioHandler {
 		throneRoom = new File("res/music/throneroom.wav");
 		actOneFinalBoss = new File("res/music/letusout.wav");
 		metro = new File("res/music/metro.wav");
+		metroMinor = new File("res/music/convex_path.wav");
 
 		seHit = new File("res/audio/doink0.wav");
 		seHit2 = new File("res/audio/doink1.wav");

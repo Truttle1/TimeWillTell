@@ -63,6 +63,7 @@ public class Game extends Canvas implements Runnable{
 	public static BufferedImage pyruz;
 	public static BufferedImage pyruzBattle;
 	public static BufferedImage cityFaded;
+	public static BufferedImage convexPath;
 	public static BufferedImage city;
 	public static BufferedImage burgerHouse;
 	@Override
@@ -140,6 +141,7 @@ public class Game extends Canvas implements Runnable{
 		pyruz = imageLoad.loadImage("/overworld/bg/pyruz_00001.png");
 		pyruzBattle = imageLoad.loadImage("/fight/bg/pyruz.png");
 		cityFaded = imageLoad.loadImage("/overworld/bg/cityfaded.png");
+		convexPath = imageLoad.loadImage("/overworld/bg/cityfaded_convex.png");
 		city = imageLoad.loadImage("/overworld/bg/city_00001.png");
 		burgerHouse = imageLoad.loadImage("/overworld/bg/burgerhouse.png");
 		
@@ -309,6 +311,11 @@ public class Game extends Canvas implements Runnable{
 	            	{
 	    				overworldMode.park.loadStage();
 	    				DigitalAgeWarps.warps(overworldMode.park);
+	            	}
+	            	if(data[1].equals("ConvexPath1"))
+	            	{
+	    				overworldMode.modern6.loadStage();
+	    				DigitalAgeWarps.warps(overworldMode.modern6);
 	            	}
 	            }
 	            if(data[0].startsWith("PLY"))

@@ -294,7 +294,8 @@ public class SimonPlayer extends GameObject{
 		currentAnimation = animation;
 	}
 	@Override
-	public void render(Graphics g) {
+	public void render(Graphics g) 
+	{
 		if(currentAnimation == BattleAnimation.simonJumpAnimation)
 		{
 			this.animateAtSpeed(x, y, currentAnimation, 0, g, 0.10);

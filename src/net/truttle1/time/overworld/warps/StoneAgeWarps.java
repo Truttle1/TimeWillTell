@@ -21,6 +21,7 @@ import net.truttle1.time.overworld.npc.CavemanNPC;
 import net.truttle1.time.overworld.npc.LomoJuiceBar;
 import net.truttle1.time.overworld.npc.Rage0;
 import net.truttle1.time.overworld.npc.Rage1;
+import net.truttle1.time.overworld.npc.Rage2;
 import net.truttle1.time.overworld.npc.SaveSign;
 import net.truttle1.time.overworld.npc.Sign;
 import net.truttle1.time.overworld.npc.carl.Carl2;
@@ -141,8 +142,17 @@ public class StoneAgeWarps {
 			room.addObject(new Sign(room.om.window, 1500, 7700, room.om,"Trogdor II Memorial Treasure Hoard this way --->!/To commemorate the life and accomplishments of King Trogdor II/of the Flairmer Kingdom, this Treasure Hoard was established!/Yeah, good luck actually obtaining it, loser! BWARR HARR HARR HARRR!"));
 			room.addObject(new Sign(room.om.window, 4700, 7700, room.om,"Uhh, wow, you actually made it to my Treasure Hoard.../THAT MUST MEAN YOU HAVE NO LIFE, LOSER! BWARR HARR HARR HARRR!/And yes, I made a memorial to myself while I was alive./It's perfecly okay, I'm the King! BOW DOWN TO ME! --Trogdor II"));
 			room.addObject(new Sign(room.om.window, 8800, 7300, room.om,"Pyruz Lava Chute :: Lava flows through here!"));
-			room.addObject(new Sign(room.om.window, 11300, 2000, room.om,"King Ignacio's Throne Room and Prison this way/-------->"));
-			room.addObject(new Sign(room.om.window, 9400, 2700, room.om,"Hey Mr. Traveler! You get a free treasure if you jump down this hole!/-Igna-I MEAN...CARNE!!! Yeah, this is Carne writing this."));
+
+			if(Quest.quests[Quest.LOMO] >= Global.LOMOCONSTANT)
+			{
+				room.addObject(new Sign(room.om.window, 11300, 2000, room.om,"King Rage's Throne Room and Spell Shop this way/-------->"));
+				room.addObject(new Sign(room.om.window, 9400, 2700, room.om,"Don't jump here!/If you do, you will fall into the Lava Chute!!!/Be safe here!/-Rage"));
+			}
+			else
+			{
+				room.addObject(new Sign(room.om.window, 11300, 2000, room.om,"King Ignacio's Throne Room and Prison this way/-------->"));
+				room.addObject(new Sign(room.om.window, 9400, 2700, room.om,"Hey Mr. Traveler! You get a free treasure if you jump down this hole!/-Igna-I MEAN...CARNE!!! Yeah, this is Carne writing this."));
+			}
 			if(Quest.quests[Quest.PYRUZ_S]<=1)
 			{
 				room.addObject(new Rage0(room.om.window,12000,3000,room.om));
@@ -153,7 +163,7 @@ public class StoneAgeWarps {
 				room.addObject(new BoulderThin(114,29,room.om.window,room.om));
 				room.addObject(new WilliamSkrappsCutscene(room.om.window,11550,3150,room.om));
 			}
-			else
+			else if(Quest.quests[Quest.LOMO] < Global.LOMOCONSTANT)
 			{
 				room.addObject(new Rage1(room.om.window, 12000, 3000, room.om));
 			}
@@ -187,13 +197,21 @@ public class StoneAgeWarps {
 			}
 			else
 			{
-				room.music = AudioHandler.mountainLoop;
+				room.addObject(new Rage2(room.om.window,800,1900,room.om));
+				//room.music = AudioHandler.mountainLoop;
 			}
 		}
 		if(room.id == RoomId.PyruzOutside)
 		{
 			Game.currentWorld = WorldId.Pyruz;
-			room.addObject(new Sign(room.om.window, 1500, 1400, room.om,"MT PYRUZ - INACTIVE VOLCANO/Erupts about every 6000 years./Last recorded eruption: 6000 years ago.../Why do I feel so nervous while writing this sign???"));
+			if(Quest.quests[Quest.LOMO]>=Global.LOMOCONSTANT)
+			{
+				room.addObject(new Sign(room.om.window, 1500, 1400, room.om,"MT PYRUZ - INACTIVE VOLCANO/Erupts about every 6000 years./Last recorded eruption: 0 years ago..."));
+			}
+			else
+			{
+				room.addObject(new Sign(room.om.window, 1500, 1400, room.om,"MT PYRUZ - INACTIVE VOLCANO/Erupts about every 6000 years./Last recorded eruption: 6000 years ago.../Why do I feel so nervous while writing this sign???"));
+			}
 			room.addObject(new SkrappsNPC1(room.om.window,1100,1200,room.om));
 			room.addObject(new Carne1(room.om.window,1100,1200,room.om));
 			room.setupWarp(0, 1300, OverworldMode.stoneAge4, 25300, 500);

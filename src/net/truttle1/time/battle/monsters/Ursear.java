@@ -206,7 +206,7 @@ public class Ursear extends Monster{
 	public void flinch() 
 	{
 		setFrame(0,0);
-		window.battleMode.selectedMonster.currentAnimation = BattleAnimation.ursearHitAnimation;
+		this.currentAnimation = BattleAnimation.ursearHitAnimation;
 	}
 	
 	

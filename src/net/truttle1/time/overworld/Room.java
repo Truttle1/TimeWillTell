@@ -29,6 +29,7 @@ import net.truttle1.time.overworld.enemies.FlairmerGOverworld;
 import net.truttle1.time.overworld.enemies.FlairmerROverworld;
 import net.truttle1.time.overworld.enemies.GarbzopOverworld;
 import net.truttle1.time.overworld.enemies.RockstarOverworld;
+import net.truttle1.time.overworld.enemies.TrukofireOverworld;
 import net.truttle1.time.overworld.enemies.UrsearOverworld;
 import net.truttle1.time.overworld.enemies.VultOverworld;
 import net.truttle1.time.overworld.npc.*;
@@ -98,7 +99,11 @@ public class Room {
 		{
 			Global.playerSad = true;
 		}
-		else if(this.id == RoomId.Pyruz3)
+		else if(this.id == RoomId.Pyruz3 && Quest.quests[Quest.LOMO]<Global.LOMOCONSTANT)
+		{
+			Global.playerSad = true;
+		}
+		else if(this.world == WorldSubType.ConvexPath)
 		{
 			Global.playerSad = true;
 		}
@@ -188,7 +193,7 @@ public class Room {
 		{
 			loadPyruz();
 		}
-		if(world == WorldSubType.Modern || world == WorldSubType.BurgerHouse)
+		if(world == WorldSubType.Modern || world == WorldSubType.BurgerHouse || world == WorldSubType.ConvexPath)
 		{
 			loadModern();
 		}
@@ -394,9 +399,21 @@ public class Room {
 				{
 					om.objects.add(new GarbzopOverworld(x*100,y*100,om.window,om,2));
 				}
+				if(stage.getRGB(x,y) == Modern.garbzop2.getRGB())
+				{
+					om.objects.add(new GarbzopOverworld(x*100,y*100,om.window,om,3));
+				}
 				if(stage.getRGB(x,y) == Modern.baumber0.getRGB())
 				{
 					om.objects.add(new BaumberOverworld(x*100,y*100,om.window,om,1));
+				}
+				if(stage.getRGB(x,y) == Modern.trukofire0.getRGB())
+				{
+					om.objects.add(new TrukofireOverworld(x*100,y*100,om.window,om,1));
+				}
+				if(stage.getRGB(x,y) == LomoVillage.stone2.getRGB())
+				{
+					om.objects.add(new Stone(x,y,om.window,om,OverworldAnimation.stone2,new Color(96,59,35)));
 				}
 			}
 		}
